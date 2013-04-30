@@ -16,11 +16,14 @@
 Url   = require "url"
 Redis = require "redis"
 
-
-
 # sets up hooks to persist the brain into redis.
 module.exports = (robot) ->
-  info = process.env.VCAP_SERVICES["redis-2.2"][0].credentials
+  if process.env.VCAP_SERVICES && process.env.VCAP_SERVICES["redis-2.2"]
+    info = process.env.VCAP_SERVICES[0].credentials
+  else
+    info =
+      port: 6379
+      hostname: "localhost"
 
   client = Redis.createClient(info.port, info.hostname)
 
