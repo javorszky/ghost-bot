@@ -80,11 +80,10 @@ currency = (c) ->
   if c is 'USD' then "$" else "£"
 
 scrape = (robot, cb) ->
-  robot.http("http://kickstarter.com/projects/#{process.env.KICKSTARTER_PROJECT}")
+  robot.http("http://www.kickstarter.com/projects/#{process.env.KICKSTARTER_PROJECT}")
     .get() (err, res, body) ->
       if err then return cb err
-      
-      console.log body
+
       b = body.match /data-backers-count=\"([0-9]*)\"/
       p = body.match /data-pledged=\"([0-9]*.[0-9]*)\"/
       c = body.match /data-currency=\"([A-Z]{3})\"/
