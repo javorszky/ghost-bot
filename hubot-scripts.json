@@ -1,3 +1,2 @@
-["ambush.coffee", "auth.coffee", "availability.coffee", "bitly.coffee",
-  "brb.coffee", "chuck-norris.coffee", "haters.coffee", "hello.coffee",
-  "karma.coffee", "remind.coffee", "roll.coffee", "script.coffee"]
+[ "brb.coffee", "chuck-norris.coffee", "haters.coffee", "hello.coffee",
+  "karma.coffee", "redis-brain.coffee", "remind.coffee", "roll.coffee"]
