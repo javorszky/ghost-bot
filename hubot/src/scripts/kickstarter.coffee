@@ -6,8 +6,9 @@
 #   KICKSTARTER_INTERVAL
 #
 # Commands:
-#   hubot kickstarter init - Start the kickstarter update feed
+#   hubot kickstarter start - Start the kickstarter update feed
 #   hubot kickstarter change <mins> - Change the interval of kickstarter updates
+#   hubot kickstarter stop - Stop the kickstarter update feed
 #
 # Author:
 #   pksunkara
@@ -22,13 +23,19 @@ module.exports = (robot) ->
     percent: 0
     pledged: 0
 
-  robot.respond /kickstarter init/i, (msg) ->
+  robot.respond /kickstarter start/i, (msg) ->
     if not init
       init = true
       setTimer interval, msg
       msg.send "Started the kickstarter update feed"
     else
       msg.send "Its already running!"
+
+  robot.respond /kickstarter stop/i, (msg) ->
+    if init
+      init = false
+      clearTimeout timer
+      msg.send "Stopped the kickstarter update feed"
 
   robot.respond /kickstarter change ([1-9][0-9]*)/i, (msg) ->
     clearTimeout timer
@@ -50,7 +57,7 @@ module.exports = (robot) ->
           msg.send "#{currency(data.currency)} #{pledged(data.pledged)} from #{data.backers} backers (#{percent(data.percent)})"
         else
           if previous.pledged < data.pledged
-            msg.send "#{currency(data.currency)} #{pledged(data.pledged)} from #{data.backers} backers (#{percent(data.percent)})"
+            msg.send "#{currency(data.currency)} #{pledged(data.pledged)} from #{data.backers} backers (#{percent(data.percent)}) (#{changed(previous.pledged, data.pledged)})"
 
             if previous.percent < 1 and data.percent > 1
               msg.send "HURRAY! We are funded successfully! PARTY TIME EVERYONE!"
@@ -59,6 +66,9 @@ module.exports = (robot) ->
             previous.percent = data.percent
       else
         setTimer 0, msg
+
+changed = (p, d) ->
+  Math.round(d - p)
 
 pledged = (p) ->
   Math.round(p).toString().replace /\B(?=(\d{3})+(?!\d))/g, ','
