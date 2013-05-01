@@ -84,15 +84,11 @@ scrape = (robot, cb) ->
     .get() (err, res, body) ->
       if err then return cb err
       
+      console.log body
       b = body.match /data-backers-count=\"([0-9]*)\"/
       p = body.match /data-pledged=\"([0-9]*.[0-9]*)\"/
       c = body.match /data-currency=\"([A-Z]{3})\"/
       t = body.match /data-percent-raised=\"([0-9]*.[0-9]*)\"/
-
-      b ?= [0, 0] 
-      p ?= [0, 0] 
-      c ?= [0, 0] 
-      t ?= [0, 0] 
 
       cb null,
         backers : b[1]
